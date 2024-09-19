@@ -86,6 +86,10 @@ def read_file(filepath: str, mode: str = 'r') -> str:
 
     Lanza:
         IOError: Si ocurre un error al leer el archivo.
+
+    Ejemplo:
+        >>> contenido = read_file("archivo.txt")
+        >>> print(contenido)
     """
     try:
         with open(filepath, mode, encoding='utf-8') as file:
@@ -105,6 +109,9 @@ def write_file(filepath: str, content: str, mode: str = 'w') -> None:
 
     Lanza:
         IOError: Si ocurre un error al escribir en el archivo.
+
+    Ejemplo:
+        >>> write_file("archivo.txt", "Hola, mundo!")
     """
     try:
         with open(filepath, mode, encoding='utf-8') as file:
@@ -120,6 +127,9 @@ def compress_file(input_filepath: str, output_filepath: str) -> None:
     Parámetros:
         input_filepath (str): Ruta del archivo a comprimir.
         output_filepath (str): Ruta donde se guardará el archivo comprimido.
+
+    Ejemplo:
+        >>> compress_file("datos.txt", "datos.txt.gz")
     """
     with open(input_filepath, 'rb') as f_in:
         with gzip.open(output_filepath, 'wb') as f_out:
@@ -132,6 +142,9 @@ def decompress_file(input_filepath: str, output_filepath: str) -> None:
     Parámetros:
         input_filepath (str): Ruta del archivo comprimido.
         output_filepath (str): Ruta donde se guardará el archivo descomprimido.
+
+    Ejemplo:
+        >>> decompress_file("datos.txt.gz", "datos.txt")
     """
     with gzip.open(input_filepath, 'rb') as f_in:
         with open(output_filepath, 'wb') as f_out:
@@ -151,6 +164,10 @@ def convert_datetime_format(date_string: str, input_format: str, output_format: 
 
     Lanza:
         ValueError: Si la fecha no coincide con el formato de entrada.
+
+    Ejemplo:
+        >>> convert_datetime_format("15/10/2023", "%d/%m/%Y", "%Y-%m-%d")
+        '2023-10-15'
     """
     try:
         dt = datetime.datetime.strptime(date_string, input_format)
@@ -170,6 +187,11 @@ def time_difference(start_time: str, end_time: str, time_format: str = "%H:%M:%S
 
     Retorna:
         datetime.timedelta: Diferencia de tiempo entre las dos horas.
+
+    Ejemplo:
+        >>> delta = time_difference("08:30:00", "12:45:00")
+        >>> print(delta)
+        4:15:00
     """
     t1 = datetime.datetime.strptime(start_time, time_format)
     t2 = datetime.datetime.strptime(end_time, time_format)
@@ -184,6 +206,12 @@ def timer(func):
 
     Retorna:
         callable: Función decorada.
+
+    Ejemplo:
+        @timer
+        def procesar_datos():
+            # Código de procesamiento
+            pass
     """
     @functools.wraps(func)
     def wrapper_timer(*args, **kwargs):
@@ -194,3 +222,4 @@ def timer(func):
         print(f"Función '{func.__name__}' ejecutada en {run_time:.4f} segundos")
         return value
     return wrapper_timer
+
