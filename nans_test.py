@@ -1,7 +1,7 @@
 import unittest
 import pandas as pd
 import numpy as np
-from nans import NanHandler  # Asumiendo que la clase está en nans.py
+from nans import NanHandler  
 
 class TestNanHandler(unittest.TestCase):
 
