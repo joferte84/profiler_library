@@ -1,11 +1,17 @@
+# utils.py
+
 import re
 import json
 import datetime
-from typing import Any, Union, Dict, List
+import os
 import gzip
 import shutil
 import functools
 import time
+import unicodedata
+from typing import Any, Union, Dict, List
+
+# Funciones de Validación
 
 def is_valid_email(email: str) -> bool:
     """
@@ -72,6 +78,8 @@ def is_valid_json(json_string: str) -> bool:
         return True
     except json.JSONDecodeError:
         return False
+
+# Funciones de Manejo de Archivos
 
 def read_file(filepath: str, mode: str = 'r') -> str:
     """
@@ -150,6 +158,8 @@ def decompress_file(input_filepath: str, output_filepath: str) -> None:
         with open(output_filepath, 'wb') as f_out:
             shutil.copyfileobj(f_in, f_out)
 
+# Funciones de Tiempo y Fecha
+
 def convert_datetime_format(date_string: str, input_format: str, output_format: str) -> str:
     """
     Convierte una fecha de un formato a otro.
@@ -197,6 +207,8 @@ def time_difference(start_time: str, end_time: str, time_format: str = "%H:%M:%S
     t2 = datetime.datetime.strptime(end_time, time_format)
     return t2 - t1
 
+# Decoradores Utilitarios
+
 def timer(func):
     """
     Decorador que mide el tiempo de ejecución de una función.
@@ -223,3 +235,92 @@ def timer(func):
         return value
     return wrapper_timer
 
+def simple_cache(func):
+    """
+    Decorador que almacena en caché los resultados de una función para entradas específicas.
+
+    Parámetros:
+        func (callable): Función a decorar.
+
+    Retorna:
+        callable: Función decorada con caché simple.
+
+    Ejemplo:
+        @simple_cache
+        def fibonacci(n):
+            if n < 2:
+                return n
+            return fibonacci(n-1) + fibonacci(n-2)
+    """
+    cache = {}
+
+    @functools.wraps(func)
+    def wrapper_cache(*args):
+        if args in cache:
+            return cache[args]
+        result = func(*args)
+        cache[args] = result
+        return result
+
+    return wrapper_cache
+
+# Funciones de Procesamiento de Cadenas
+
+def remove_whitespace(text: str) -> str:
+    """
+    Elimina espacios en blanco al inicio y al final de una cadena y reduce múltiples espacios internos a uno solo.
+
+    Parámetros:
+        text (str): Cadena de texto a procesar.
+
+    Retorna:
+        str: Cadena de texto sin espacios redundantes.
+
+    Ejemplo:
+        >>> remove_whitespace("  Hola   mundo  ")
+        'Hola mundo'
+    """
+    return ' '.join(text.strip().split())
+
+def normalize_text(text: str) -> str:
+    """
+    Normaliza una cadena de texto eliminando acentos y convirtiendo a minúsculas.
+
+    Parámetros:
+        text (str): Cadena de texto a normalizar.
+
+    Retorna:
+        str: Cadena de texto normalizada.
+
+    Ejemplo:
+        >>> normalize_text("Canción")
+        'cancion'
+    """
+    text = text.lower()
+    text = unicodedata.normalize('NFD', text)
+    text = ''.join(char for char in text if unicodedata.category(char) != 'Mn')
+    return text
+
+# Funciones Matemáticas Adicionales
+
+def calculate_percentage(part: float, whole: float) -> float:
+    """
+    Calcula el porcentaje que representa 'part' del 'whole'.
+
+    Parámetros:
+        part (float): Parte del total.
+        whole (float): Total.
+
+    Retorna:
+        float: Porcentaje correspondiente.
+
+    Lanza:
+        ValueError: Si 'whole' es cero.
+
+    Ejemplo:
+        >>> calculate_percentage(50, 200)
+        25.0
+    """
+    if whole == 0:
+        raise ValueError("El total no puede ser cero.")
+    return (part / whole) * 100
