@@ -11,24 +11,25 @@ Esta librería es una colección de módulos, funciones y clases diseñados para
 
 ## Contenido
 
-- **NanHandler**: Clase para gestionar valores faltantes en conjuntos de datos.
-- **OutlierHandler**: Clase para detectar y tratar outliers utilizando diferentes métodos estadísticos.
-- **DataProfiler**: Clase para generar reportes detallados de perfilamiento de datos en formato HTML.
-- **statistics_utils.py**: Módulo con funciones estadísticas comunes, como medidas descriptivas, pruebas de hipótesis, análisis de correlación y más.
+- **`NanHandler`**: Clase para gestionar valores faltantes en conjuntos de datos.
+- **`OutlierHandler`**: Clase para detectar y tratar outliers utilizando diferentes métodos estadísticos.
+- **`DataProfiler`** y **`report`**: Clases para generar reportes detallados de perfilamiento de datos en formato HTML.
+- **`statistics_utils`** y **`utils`**: Módulos con funciones estadísticas comunes, como medidas descriptivas, pruebas de hipótesis, análisis de correlación y más.
+- **`visualizations`**: Módulo con gráficas para la observación de los datos.
 
 ## Requisitos
 
-- Python 3.x
+- `Python 3.x`
 - Bibliotecas:
-  - numpy
-  - pandas
-  - scipy
-  - matplotlib
-  - seaborn
+  - `numpy`
+  - `pandas`
+  - `scipy`
+  - `matplotlib`
+  - `seaborn`
 
 ## Instalación
 
-Actualmente, la librería se puede instalar clonando el repositorio y agregándola al PYTHONPATH:
+Actualmente, la librería se puede instalar clonando el repositorio y agregándola al `PYTHONPATH`:
 
 ```bash
 git clone https://github.com/joferte84/profiler_library.git
@@ -46,4 +47,18 @@ from utils import read_file
 from visualizations import Visualizer
 ```
 
-Pendiente de agregar ejemplos y documentación de uso.
+## Módulos y funcionalidades
+
+### 1. Manejo de valores faltantes (`nans.py`)
+
+**NanHandler**
+
+Clase para gestionar valores faltantes en DataFrames de pandas.
+
+#### Métodos Principales:
+
+- `detect_nans()`: Identifica las columnas con valores faltantes.
+
+- `impute_nans(strategy='mean')`: Imputa los valores faltantes utilizando la estrategia especificada (mean, median, mode).
+
+- `drop_nans()`: Elimina filas o columnas que contienen valores faltantes.
